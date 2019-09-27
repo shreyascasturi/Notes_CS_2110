@@ -1,0 +1,340 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+\usepackage{amsthm}
+\usepackage{array,mathtools}
+\newcommand*{\carry}[1][1]{\overset{#1}}
+\newcolumntype{B}[1]{r*{#1}{@{\,}r}}
+\newtheorem*{remark}
+{Remark}
+\title{Notes on CS 2110}
+\author{Shreyas Casturi}
+\begin{document}
+\maketitle
+
+\newpage
+
+\section*{Preface}
+These notes are a way for me to prove I understood the 2110 material.  They are intended as a reference.
+
+\newpage
+
+\section*{Chapter 1: Datatypes}
+
+If we aim to have any sort of discussion about the architectures that underpin computers, we must first
+understand \textit{binary} numbers and their importance. Indeed, a base 10 numerical system does not lend itself well to computing.
+
+When I say, "what is five?", you may draw the number five, the word "five", five lines, a mathematical expression that evaluates to five, so on and so forth.
+What we notice is that these are simply \textit{ways or schemes} of denoting something.
+
+So, our base-10 numeric system is another \textit{scheme} of denoting quantities that have no real name. After all, numbers exist independently of us.
+
+Might there be an easier way of expressing what we already know?
+
+\subsection*{Binary Numbers}
+
+In the early days of computing, much detail was devoted to the electronics and hardware. Scientists realized that circuits
+obeyed a simple rule -- either they were on, or they were off. There was no inbetween.
+
+This made it easier to accept the \textit{base 2 numeric system}. Numbers expressed in this system are
+known as \textit{binary} numbers. A single element
+of a binary number is known as a \textit{binary digit}, or a \textit{bit}. A binary
+digit has one of two values: 0, or 1. A binary number
+is composed of \textit{only} binary digits.
+
+So, a random binary number might look like this
+
+\[number = 010001010101000100111000010101\]
+
+Given $n$ bits, how many possible binary numbers can I generate?
+
+\begin{remark}
+    Given $n$ binary digits, there are $2^n$ possible binary numbers.
+\end{remark}
+
+\begin{proof}
+    There are 2 numbers possible for each of the $n$ digits. Multiply
+    this out to obtain the result. Start with 1 or 2 digits, and work up from there.
+\end{proof}
+
+
+    Of course, these numbers are worthless on their own. If someone told you that there were "0101010101"
+    cats stuck in that burning house on the left, you'd probably look at them funny. You might even inhale some smoke
+    and leave. Those poor cats are dead.
+
+    \subsection*{Assignations in Binary}
+
+    For four binary digits, 16 combinations are generated.
+    We may naturally try to assign our old numbers (which we'll call integers) to these 16 combinations.
+    But how many orderings are possible?
+
+    There are $n!$ orderings possible, and we'd like to create an ordering
+    that is easy enough for all of us to follow. Indeed, we could
+    just do something like this:
+
+    \newpage
+
+    \begin{center}
+        \begin{tabular}{|c|c|}
+          \hline
+          Integers & Binary numbers \\
+          \hline
+          0 & 0001 \\
+          1 & 1010 \\
+          2 & 1101 \\
+          $\vdots$ & $\vdots$\\
+          \hline
+                     
+        \end{tabular}
+    \end{center}
+    This really isn't helpful, is it.
+
+    Well, what happens if we assign 0000 to 0, naturally, and 1111
+    to be the largest possible integer that could be generated? For 16 possible
+    combinations, obviously the range is from $[0 \rightarrow 15]$, or
+    to put it a little more mathematically, $[0 \rightarrow 2^n - 1]$.
+
+    The most interesting part is this: Let us have only two binary digits. There
+    are then four possible binary numbers, and four integers
+    we could assign. If 00 is 0, then 11 is 3. Let 01 be 1, and let
+    10 be 2.
+
+    Then we get this chart:
+
+    \begin{center}
+        \begin{tabular}{|c|c|}
+          \hline
+          Integers & Binary numbers \\
+          \hline
+          0 & 00 \\
+          1 & 01 \\
+          2 & 10 \\
+          3 & 11 \\         
+          \hline
+                     
+        \end{tabular}
+    \end{center}
+
+    Observe the progression of the binary numbers. Each time we add 1 to our integers, digits
+    are being flipped, but exactly what digits?
+
+    Let us do this one last time for 3 binary digits. How many binary numbers can we generate?
+    And what is the range of the integers for these binary numbers?
+
+    The chart follows.
+
+        \begin{center}
+        \begin{tabular}{|c|c|}
+          \hline
+          Real numbers & Binary numbers \\
+          \hline
+          0 & 000 \\
+          1 & 001 \\
+          2 & 010  \\
+          3 & 011 \\
+          4 & 100 \\
+          5 & 101 \\
+          6 & 110 \\
+          7 & 111 \\
+          \hline
+                     
+        \end{tabular}
+    \end{center}
+
+    A relationship is obvious from the numbers generated, but may not be intuitive.
+    Here is what we know, so far, about binary numbers:
+
+    \newpage
+
+    \begin{enumerate}
+        \item A binary number is formed from binary digits.
+        \item Each binary digit can be 0 or 1.
+        \item There are $2^n$ binary numbers generated from $n$ digits.
+        \item We know that we could assign $2^n$ of our integers
+        to the $2^n$ binary numbers we generate from $n$ binary digits.
+        \item We know there are certain intuitive ways to begin this ordering.
+        \item Let the $n$ binary digits be all 0 to denote 0, and let the $n$ digits be all 1 to denote the largest possible integer.
+        \item But... what happens after that?
+    \end{enumerate}
+
+    The more general question we might ask ourselves is \textit{how do we actually determine what numbers to assign to what combinations}?
+
+    One way to do this is to view \textit{each} binary digit as a power of 2. Let us do this like so, for four binary digits:
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|}
+          \hline
+          Integers & $2^3 = 8$ & $2^2 = 4$ & $2^1 = 2$ & $2^0 = 1$ & Binary numbers \\
+          \hline
+          0 & 0 & 0 & 0 & 0 & 0000 \\
+          1 & 0 & 0 & 0 & 1 & 0001 \\
+          2 & 0 & 0 & 1 & 0 & 0010 \\
+          3 & 0 & 0 & 1 & 1 & 0011 \\
+          4 & 0 & 1 & 0 & 0 & 0100 \\
+          5 & 0 & 1 & 0 & 1 & 0101 \\
+          6 & 0 & 1 & 1 & 0 & 0110 \\         
+          7 & 0 & 1 & 1 & 1 & 0111 \\
+          8 & 1 & 0 & 0 & 0 & 1000 \\
+          9 & 1 & 0 & 0 & 1 & 1001 \\
+          10 & 1 & 0 & 1 & 0 & 1010 \\
+          11 & 1 & 0 & 1 & 1 & 1011 \\
+          12 & 1 & 1 & 0 & 0 & 1100 \\
+          13 & 1 & 1 & 0 & 1 & 1101 \\
+          14 & 1 & 1 & 1 & 0 & 1110 \\
+          15 & 1 & 1 & 1 & 1 & 1111 \\
+          \hline
+        \end{tabular}
+    \end{center}
+
+    Then, we can intuitively break down any binary number given to us by writing
+    the powers of 2 above these numbers, starting with $2^0$ for the right-most digit,
+    and ending with $2^{n - 1}$ for the $n$ digits given to us.
+
+    Notice then that all of these numbers can be written as sums of various powers of 2.
+
+    Let us ask ourselves some questions:
+
+    \begin{enumerate}
+        \item Given $n$ binary digits, how many possible binary numbers can be made?
+        \item Given $n$ binary digits, what is the largest power of 2 possible, and what digit
+        is it found at?
+        \item Given $n$ binary digits, how many possible integers can be assigned, and what
+        is the range of these integers, assuming only 0 and the positive integers are used?
+    \end{enumerate}
+    
+
+    \begin{remark} Some Facts On Binary Digits:
+            \begin{enumerate}
+                \item For $n$ binary digits, $2^n$ binary numbers can be generated.
+                \item Following from the chart above, the largest power of 2 possible is
+                $2^{n - 1}$. It is found at the left-most digit.
+                \item Given that we map integers to binary numbers in a one-to-one correspondence,
+                then $2^n$ integers can be assigned. Assuming only 0 and the positive integers are used,
+                then the range of integers is $[0 \rightarrow (2^{n} - 1)]$.
+            \end{enumerate}
+        \end{remark}
+
+        %%But this all begs the question: \textit{what about negative numbers?}
+
+        
+Before we do anything else with binary numbers, we should first make sure we are comfortable with
+basic operations involving those binary numbers.
+
+\subsection*{Addition and Subtraction In Binary}
+
+We should get comfortable thinking in binary terms, so this means we should have some experience
+operating with binary numbers -- namely in addition and subtraction. We will use the binary-integer
+relationships we have described above to help us figure out what our binary result should be.
+
+We have already discussed that there are only ever 2 values in each bit of a binary number -- 0 or 1, and that
+the place values are simply powers of 2, starting from $2^0$, all the way to $2^{n - 1}$.
+
+With this in mind, we shall pose some problems.
+
+\subsubsection*{Basic Addition}
+
+\textbf{Problem 1: } Let $A = 0010 \; 1110$, and let $B = 0110 \; 1101$. What is $A + B$? \\
+
+\textbf{Answer: }
+
+We can write the problem as
+
+\begin{equation*}
+    \begin{array}{B3}
+      0010 &              1110 \\ 
+      {}+ 0110 &              1101 \\ \hline
+          xxxx & xxxx
+    \end{array}
+    \end{equation*}
+
+    \begin{enumerate}
+        \item (Both Zero Bits): $0 + 0 = 0$
+        \item (Bits Not Equal): $0 + 1 = 1 + 0 = 1$.
+        \item (Both Bits == 1): $1 + 1 = 0 (\text{carry over 1})$
+    \end{enumerate}
+    
+    The rule for addition is simple -- if both bits are 0, the answer bit is 0. If both of the
+    bits are not the same, then it's a 1, with no carry. If both of the bits are 1, then the result
+    is a 0, and you carry a 1 over. Basically, 1 + 1 = 0 (with a carry of 1 to the next digit).
+
+    So, our addition problem then becomes
+
+\begin{equation*}
+    \begin{array}{B3}
+
+      \carry0 \carry0 1 \carry 0 &              \carry 1 110 \\ 
+      {} + 0110 &              1101 \\ \hline
+           1001 &                  1011
+                                 
+    \end{array}
+    \end{equation*}
+
+    What is this answer in base 10 format?
+
+    I won't write out the whole tables, but
+    you get
+
+    \[1001 \; 1011_2 = 2^7 + 2^4 + 2^3 + 2^1 + 2^0 = 128 + 16 + 8 + 2 + 1 = 155. \]
+
+    If you turn $A$ and $B$ into their base-10 expressions and add those two integers together,
+    you should get the same result. If you get stuck, try turning your adding terms into
+    their base-10 forms and adding from there. It is a handy reference.
+
+    \subsubsection*{Basic Subtraction}
+    This will be filled in later.
+
+
+
+    Now that we know how to work with binary numbers and perform operations on them,
+    we may ask ourselves a simple question -- we've only covered the positive integers. \textit{What about negative
+    numbers?}
+
+
+
+  \subsection*{Beyond The Positive}
+  We usually deal with both positive and negative integers, but so far we've only dealt with positive integers
+  and zero, strictly. We must find a way to incorporate negative integers.
+
+  
+  \subsubsection*{Signed Magnitude}
+  
+  One logical idea is that given a binary number of $n$ bits, then reserve one bit -- the leftmost bit,
+  or the most significant bit -- to represent the sign
+  of the number. This is called the \textit{signed magnitude}.
+
+  So 0000 is 0, 1000 is -0, 0001 is 1, and 1001 is -1, so on and so forth.
+
+  We will make use of a chart from the previous sections and continue to update as such, with
+  each scheme we get/invent.
+
+  \textbf{We shall use this chart to show four-bit numbers and our various numbering schemes.}
+
+  The first two are the unsigned integers, and signed magnitude. 
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|}
+          \hline
+          Binary Numbers & Unsigned Integers & Signed Ints \\
+          \hline
+          0000 & 0 & 0\\ 
+          0001 & 1 & 1\\  
+          0010 & 2 & 2\\  
+          0011 & 3 & 3\\  
+          0100 & 4 & 4\\  
+          0101 & 5 & 5\\  
+          0110 & 6 & 6\\         
+          0111 & 7 & 7\\  
+          1000 & 8 & -0\\  
+          1001 & 9 & -1\\  
+          1010 & 10 & -2\\
+          1011 & 11 & -3\\
+          1100 & 12 & -4\\
+          1101 & 13 & -5\\
+          1110 & 14 & -6\\
+          1111 & 15 & -7\\
+          \hline
+        \end{tabular}
+    \end{center}
+  
+        
+\end{document}
+
