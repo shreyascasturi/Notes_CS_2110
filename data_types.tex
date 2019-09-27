@@ -190,7 +190,7 @@ Given $n$ bits, how many possible binary numbers can I generate?
     the powers of 2 above these numbers, starting with $2^0$ for the right-most digit,
     and ending with $2^{n - 1}$ for the $n$ digits given to us.
 
-    Notice then that all of these numbers can be written as sums of various powers of 2.
+    Notice then that all of these numbers can be written as \textbf{sums of various powers of 2}.
 
     Let us ask ourselves some questions:
 
@@ -309,7 +309,7 @@ We can write the problem as
 
   \textbf{We shall use this chart to show four-bit numbers and our various numbering schemes.}
 
-  The first two are the unsigned integers, and signed magnitude. 
+  The first two are the unsigned integers and signed magnitude. 
     \begin{center}
         \begin{tabular}{|c|c|c|c|c|}
           \hline
@@ -334,7 +334,110 @@ We can write the problem as
           \hline
         \end{tabular}
     \end{center}
-  
+
+    \subsubsection*{Problems with Signed Magnitude}
+
+    While the signed magnitude is intuitive, there are some problems -- namely,
+    why are we going to have two zeroes (0000 and 1000)?
+
+    Is there a way to improve upon this signed magnitude scheme?
+
+    There in fact is, but it isn't immediately intuitive. If we start with a
+    number line as so
+
+    \textbf{INSERT THE FUCKING NUMBER LINE}
+
+    We'll put 0 and 0000 at the exact middle, and go up by 1 \textbf{until} our
+    left-most significant bit becomes 1. At this first instance (1000, to be exact),
+    we're going to assign this number $-(2^3)$, or -8. Visually, we'll \textbf{wrap around}
+    the number line and start from the back, going back towards 0000. Our final number, 1111,
+    will be -1.
+
+    This number scheme is known as \textbf{two's complement}, and it is the major scheme
+    that we'll be using throughout this course and, for that matter, all computers.
+
+    Why is this scheme so widely used? % This has to do with something known as \textit{modular arithmetic},
+    % and how additions under \textit{modulo $2^n$} with these particular assignations
+    % works nicely and obeys the laws of modular arithmetic.
+    Notice how the difference between positive and negative
+    numbers is nothing more than a \textbf{bitwise inverse} (flip the bits and add 1). Also note that because we can find
+    the additive inverse of a number easily, there's no reason to actually perform (or remember)
+    \textit{how} to perform subtraction, when all you're doing is still doing the act of addition
+    with an additive inverse.
+
+    This allows us to gain another column in our chart:
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|}
+          \hline
+          Binary Numbers & Unsigned Integers & Signed Ints & 2's Complement \\
+          \hline
+          0000 & 0 & 0 & 0 \\ 
+          0001 & 1 & 1 & 1\\  
+          0010 & 2 & 2 & 2\\  
+          0011 & 3 & 3 & 3\\  
+          0100 & 4 & 4 & 4\\  
+          0101 & 5 & 5 & 5\\  
+          0110 & 6 & 6 & 6\\         
+          0111 & 7 & 7 & 7\\  
+          1000 & 8 & -0 & -8 \\  
+          1001 & 9 & -1 & -7 \\  
+          1010 & 10 & -2 & -6 \\
+          1011 & 11 & -3 & -5 \\
+          1100 & 12 & -4 & -4 \\
+          1101 & 13 & -5 & -3 \\
+          1110 & 14 & -6 & -2 \\
+          1111 & 15 & -7 & -1 \\
+          \hline
+        \end{tabular}
+    \end{center}
+
+    We immediately gain some questions:
+
+    \begin{enumerate}
+        \item Given an $n$-bit binary number, what is the largest positive value we can have,
+        and what is the largest negative value we can have, assuming we're working in a 2's complement
+        system?
+        \item What is always the smallest negative number (-1) represented
+        as in 2's complement, for any given $n$-bit number?
+    \end{enumerate}
+
+    The above is good food for thought. But now that
+    we know about 2's complement, we must ask ourselves how to find the \textit{additive inverses}
+    of positive numbers, as we'll need to be able to do subtraction (addition with additive inverses)
+    easily.
+
+    \subsubsection*{Additive Inverses in 2's Complement}
+
+    The easiest, most surefire way to do find
+    2's complement additive inverses (negative numbers) -- that is, a way that is foolproof and can never fail,
+    is as follows:
+
+    \begin{remark}
+        Naive Inversion: Given a number $x$ in 2's complement, in order to find the additive inverse
+        of this number, given as $x^{-1}$, simply flip the bits of $x$ and add 1 to the least significant bit.
+    \end{remark}
+
+
+    Of course, for long numbers, this may be a bit of a pain to do. There is an easier way, though it is sometimes
+    harder to remember -- I myself have to always do a bit of work to remember/rederive the rule.
+
+    \begin{remark}
+        Bossut's Rule: Given a number $x$ in 2's complement, in order to find the additive inverse of this number,
+        start from the least-significant bit and go left. Find the \textbf{first} bit that is 1. \textbf{flip}
+        all the bits \textbf{to the left} of this first 1 bit. The result will be the additive inverse of $x$, given
+        as $x^{-1}$.        
+    \end{remark}
+
+    Either way works.
+
+    
+        
+
+    
+
+    
+    
         
 \end{document}
 
