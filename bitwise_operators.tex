@@ -1,0 +1,233 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+\usepackage{amsthm}
+\usepackage{array,mathtools}
+\newcommand*{\carry}[1][1]{\overset{#1}}
+\newcolumntype{B}[1]{r*{#1}{@{\,}r}}
+\newtheorem*{remark}
+{Remark}
+\title{Bitwise Operations -- Chapter 2, For CS 2110}
+\author{Shreyas Casturi}
+\date{}
+\begin{document}
+\maketitle
+
+\newpage
+\doublespacing
+\tableofcontents
+\singlespacing
+
+\newpage
+
+\section{Chapter 2: Bitwise Operations}
+
+Now that we have an understanding of how to work
+with basic binary numbers, we can now learn about
+\textit{logical operators} that work on
+bits/binary numbers, such as $AND, OR, NOT$. You may have seen these operators
+before.
+
+We will deal with the concept of \textit{floating-point numbers},
+which carry more precision, but are conceptually harder
+to represent.
+
+We will also learn to work with other numerical
+systems, such as octal and hexadecimal, with examples of conversion between these systems.
+
+\subsection{Logical Operators}
+
+Logical operators are done on bits, and are hence called \textit{bitwise} operators.
+
+We will denote a sub-sub-section to each major
+logical operator, usually showing two truth tables. Exercises
+will give you actual experience.
+
+\subsubsection{AND}
+
+A bitwise AND operation works like so,
+for given bits 0 and 1:
+
+\begin{center}
+    
+    \begin{tabular}{|c|c|c|}
+      \hline
+    AND & 0 & 1 \\
+    \hline
+      0 & 0 & 0 \\
+      \hline
+    1 & 0 & 1 \\
+    \hline
+    \end{tabular}
+   
+\end{center}
+
+A more general example is
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      A & B & (A AND B, AB, $A \; \& \; B$) \\
+      \hline
+      0 & 0 & 0 \\
+      \hline
+      0 & 1 & 0 \\
+      \hline
+      1 & 0 & 0 \\
+      \hline
+      1 & 1 & 1 \\
+      \hline
+    \end{tabular}
+    
+\end{center}
+\newpage
+\subsubsection{OR}
+
+An OR operation works as so
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      OR & 0 & 1 \\
+      \hline
+      0 & 0 & 1 \\
+      \hline
+      1 & 1 & 1 \\
+      \hline
+      
+    \end{tabular}
+\end{center}
+
+A general example is
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      A & B & (A OR B, A + B, $A \; | \; B$) \\
+      \hline
+      0 & 0 & 0 \\
+      \hline
+      0 & 1 & 1 \\
+      \hline
+      1 & 0 & 1 \\
+      \hline
+      1 & 1 & 1 \\
+      \hline
+    \end{tabular}
+\end{center}
+
+There is a difference between this: $||$, and $|$. The latter is the bitwise OR
+operator, which does operations on bits, but the former is a conditional OR,
+used in evaluating statements, as seen in Java, C, and other languages.
+\subsubsection{NOT}
+
+A NOT operation doesn't require two bits, but rather one. A NOT operation
+negates/flips the present value.
+
+So, we have
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+      \hline
+      NOT & Result \\
+      \hline
+      0 & 1 \\
+      \hline
+      1 & 0 \\
+      \hline
+    \end{tabular}
+\end{center}
+
+A NOT can be represented as a ``~".
+     
+\subsubsection{XOR}
+
+An XOR operation is more interesting, and does require two bits/binary numbers.
+If the bits are the same, then we return 0, but if the bits aren't the same, we return 1.
+
+We obtain
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      XOR & 0 & 1 \\
+      \hline
+      0 & 0 & 1 \\
+      \hline
+      1 & 1 & 0 \\
+      \hline
+    \end{tabular}
+\end{center}
+
+A general operation can be seen as
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      A & B & A XOR B\\
+      \hline
+      0 & 0 & 0 \\
+      \hline
+      0 & 1 & 1 \\
+      \hline
+      1 & 0 & 1 \\
+      \hline
+      1 & 1 & 0 \\
+      \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection{NAND}
+
+A NAND can be represented as a negation of the result of the AND operation.
+So, the result of A NAND B is equivalent to !(A \& B).
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      NAND & 0 & 1 \\
+      \hline
+      0 & 1 & 1 \\
+      \hline
+      1 & 1 & 0 \\
+      \hline
+    \end{tabular}
+    \end{center}
+
+    Generally, this is written as
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+          \hline
+          A & B & A NAND B \\
+          \hline
+          0 & 0 & 1 \\
+          \hline
+          0 & 1 & 1 \\
+          \hline
+          1 & 0 & 1 \\
+          \hline
+          1 & 1 & 0 \\
+          \hline
+        \end{tabular}
+    \end{center}
+    
+\subsubsection{NOR}
+
+
+\subsection{Bit Vectors}
+
+
+\subsection{Hexadecmial}
+
+\subsubsection{Converting from Binary to Hexadecimal, Vice Versa}
+
+\subsection{Octal}
+
+\subsubsection{Converting from Binary to Octal, Vice Versa}
+
+\subsection{Floating Point Numbers}
+
+
+
+\end{document}
